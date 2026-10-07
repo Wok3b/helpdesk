@@ -1,0 +1,40 @@
+# Runs the whole app: SQL Server, the API and the Angular frontend.
+#   docker compose up --build
+# then open http://localhost:8080 and use one of the demo accounts on the sign-in page.
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD:-HelpDesk!Local2026}
+    volumes:
+      - helpdesk-sql:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+
+  api:
+    build: ./backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__HelpDesk: "Server=db;Database=HelpDesk;User Id=sa;Password=${SA_PASSWORD:-HelpDesk!Local2026};TrustServerCertificate=True"
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:-docker-demo-signing-key-change-me-0123456789}
+      Database__MigrateOnStartup: "true"
+      Database__SeedDemoData: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  helpdesk-sql:
