@@ -229,7 +229,6 @@ public static class DbSeeder
     private static DateTimeOffset BusinessHour(DateTimeOffset day, Random rng)
     {
         var d = day.UtcDateTime.Date;
-        while (d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday) d = d.AddDays(-1);
         return new DateTimeOffset(d.AddHours(rng.Next(6, 15)).AddMinutes(rng.Next(0, 60)), TimeSpan.Zero);
     }
 }

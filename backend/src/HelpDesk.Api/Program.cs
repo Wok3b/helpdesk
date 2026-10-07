@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ---------- Infrastructure ----------
 builder.Services.AddDbContext<AppDbContext>(o =>
-    o.UseSqlServer(builder.Configuration.GetConnectionString("HelpDesk")));
+    o.UseSqlServer(builder.Configuration.GetConnectionString("HelpDesk"), sql => sql.EnableRetryOnFailure()));
 
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddHttpContextAccessor();

@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+@import "@fontsource-variable/inter";
+@import "primeicons/primeicons.css";
+
+/* Tailwind's dark: variant follows the same class PrimeNG uses for its dark theme. */
+@custom-variant dark (&:where(.app-dark, .app-dark *));
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --app-bg: var(--p-surface-50);
+  --app-panel: #ffffff;
+  --app-border: var(--p-surface-200);
+  --app-muted: var(--p-surface-500);
+  --app-text: var(--p-surface-900);
+  --app-sidebar: #ffffff;
+}
+
+.app-dark {
+  --app-bg: var(--p-surface-950);
+  --app-panel: var(--p-surface-900);
+  --app-border: var(--p-surface-800);
+  --app-muted: var(--p-surface-400);
+  --app-text: var(--p-surface-0);
+  --app-sidebar: var(--p-surface-900);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A plain bordered panel, used for every card on the page. */
+.panel {
+  background: var(--app-panel);
+  border: 1px solid var(--app-border);
+  border-radius: 0.875rem;
+}
+
+.muted {
+  color: var(--app-muted);
+}
+
+.ticket-key {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--p-primary-600);
+}
+
+.app-dark .ticket-key {
+  color: var(--p-primary-300);
+}
+
+/* Table rows are clickable links to the ticket. */
+.clickable-row {
+  cursor: pointer;
+}
